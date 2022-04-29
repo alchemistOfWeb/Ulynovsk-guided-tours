@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'imagekit',
+    'ckeditor',
+    'points',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +72,28 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'
+
+# Ckeditor
+# https://pypi.org/project/django-ckeditor/#optional-customizing-ckeditor-editor
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'enterMode': 2,
+        'toolbar': 'Custom',
+        'toolbar_Custom': [ 
+            {'name': 'document', 'items': ['Preview', 'Templates'] },
+            {'name': 'clipboard', 'items': ['Undo', 'Redo'] },
+            {'name': 'editing', 'items': ['Replace', '-', 'SelectAll'] },          
+            {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+            {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Heading']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['ShowBlocks']},
+            {'name': 'about', 'items': ['About']},
+        ],
+    },
+}
 
 
 # Database
@@ -116,6 +142,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

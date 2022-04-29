@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 django = "*"
 pillow = "*"
+python-dotenv = "*"
+django-ckeditor = "*"
+django-imagekit = "*"
 
 [dev-packages]
 
