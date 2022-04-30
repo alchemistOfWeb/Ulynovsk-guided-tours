@@ -25,7 +25,7 @@ class Point(models.Model):
                                  blank=True, null=True)
     long = models.DecimalField('долгота', max_digits=9, decimal_places=6, blank=True, null=True)
     lat = models.DecimalField('широта', max_digits=9, decimal_places=6, blank=True, null=True)
-    # do_work
+    works = models.BooleanField('Активна?', blank=False, null=False, default=True)
 
     def __str__(self) -> str:
         return self.title
@@ -59,7 +59,7 @@ class Path(models.Model):
                                     through_fields=('path', 'point'))
     created_at = models.DateTimeField('Создан', auto_now_add=True)
     updated_at = models.DateTimeField('Изменен', auto_now=True)
-    # do_work
+    works = models.BooleanField('Активен?', blank=False, null=False, default=True)
     
     def __str__(self) -> str:
         return self.title
@@ -70,9 +70,10 @@ class Path(models.Model):
 
 
 class PointInPath(models.Model):
-    description = models.TextField('описание', max_length=2048, blank=True, null=False)
     point = models.ForeignKey(Point, on_delete=models.CASCADE)
     path = models.ForeignKey(Path, on_delete=models.CASCADE)
+    description = models.TextField('описание', max_length=2048, blank=True, null=False)
+    works = models.BooleanField('Активна?', blank=False, null=False, default=True)
 
     def __str__(self) -> str:
         return f'{self.point.title}|{self.path.title}'

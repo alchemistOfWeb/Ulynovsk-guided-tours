@@ -6,9 +6,8 @@ admin.site.site_header = 'Приложение для экскурсовода'
 
 
 class PointAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'category', 'long', 'lat']
+    list_display = ['id', 'title', 'category', 'long', 'lat', 'works']
     list_filter = ['category',]
-    # 
 
 
 class PointInPathInLine(admin.TabularInline):
@@ -18,7 +17,7 @@ class PointInPathInLine(admin.TabularInline):
 
 
 class PathAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'created_at', 'updated_at']
+    list_display = ['id', 'title', 'created_at', 'updated_at', 'works']
     inlines = [PointInPathInLine]
 
 
