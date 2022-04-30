@@ -25,6 +25,7 @@ class Point(models.Model):
                                  blank=True, null=True)
     long = models.DecimalField('долгота', max_digits=9, decimal_places=6, blank=True, null=True)
     lat = models.DecimalField('широта', max_digits=9, decimal_places=6, blank=True, null=True)
+    # do_work
 
     def __str__(self) -> str:
         return self.title
@@ -39,6 +40,7 @@ class Image(models.Model):
     caption = models.TextField('описание', max_length=2048)
     point = models.ForeignKey(Point, on_delete=models.CASCADE, blank=True, null=True)
     img = models.ImageField('изображение', upload_to='images/', blank=False, null=False)
+    # do_show
 
     def __str__(self) -> str:
         return self.title
@@ -53,8 +55,11 @@ class Path(models.Model):
     description = models.TextField('описание', max_length=4096, blank=True, null=False)
     points = models.ManyToManyField(Point, 
                                     related_name='paths', 
-                                    through='points.PointPath', 
+                                    through='points.PointInPath', 
                                     through_fields=('path', 'point'))
+    created_at = models.DateTimeField('Создан', auto_now_add=True)
+    updated_at = models.DateTimeField('Изменен', auto_now=True)
+    # do_work
     
     def __str__(self) -> str:
         return self.title
@@ -64,6 +69,10 @@ class Path(models.Model):
         verbose_name_plural = 'Маршруты'
 
 
-class PointPath(models.Model):
+class PointInPath(models.Model):
+    description = models.TextField('описание', max_length=2048, blank=True, null=False)
     point = models.ForeignKey(Point, on_delete=models.CASCADE)
     path = models.ForeignKey(Path, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'{self.point.title}|{self.path.title}'
