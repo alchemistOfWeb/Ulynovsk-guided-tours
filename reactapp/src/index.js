@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 // "npm i -D react-router-dom" - write for install router
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import Layout from './pages/Layout';
 import Home from './pages/Home';
