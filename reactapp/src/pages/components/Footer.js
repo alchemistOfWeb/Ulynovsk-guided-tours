@@ -16,10 +16,16 @@ export default function Footer() {
         <footer id="footer">
             <div className="footer-inner container-fluid">
                 <div className="col-4">
-                    <h3>Контакты:</h3>
-                    <a href={`tel:+${telStr}`}>+{telStr}</a>
-                    <a href={`mailto:${emailStr}`}>{emailStr}</a>
-                    <h3>Соцсети:</h3>
+                    <h5>Контакты:</h5>
+                    <ListGroup variant="flush" className="list-unstyled contacts-list">
+                        <ListGroup.Item>
+                            <a href={`tel:+${telStr}`}>+{telStr}</a>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <a href={`mailto:${emailStr}`}>{emailStr}</a>
+                        </ListGroup.Item>
+                    </ListGroup>
+                    <h5>Соцсети:</h5>
                     <ListGroup horizontal className="list-unstyled social-icons">
                         <ListGroup.Item>
                             <a 
