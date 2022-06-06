@@ -19,9 +19,9 @@ export default function Report({data}){
                         height="60" />
                     <div>
                         <h6 className="fw-bold text-primary mb-1">{data.author.full_name}</h6>
-                        <p className="text-muted small mb-0">
+                        {/* <p className="text-muted small mb-0">
                         Shared publicly - Jan 2020
-                        </p>
+                        </p> */}
                     </div>
                 </div>
     

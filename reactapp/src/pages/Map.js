@@ -6,12 +6,21 @@ import { Nav } from "react-bootstrap";
 
 export default function Map() {
 
-    <p>
-        Здесь представленная интерактивная карта. На ней отмечены значимые места и достопримечательности связанные с писателями жившими на территории Ульяновской области.
-    </p>
+    window.ymaps.ready(()=>{
+        console.log('hello world!');
+        var myMap = new window.ymaps.Map("map", {
+            center: [54.318542, 48.397557],
+            zoom: 12,
+        });
+        var myPlacemark = new window.ymaps.Placemark([54.316835, 48.402997]);
+        myMap.geoObjects.add(myPlacemark);
+    })
 
     return (
         <div id="paths-section">
+            <p>
+                Здесь представленная интерактивная карта. На ней отмечены значимые места и достопримечательности связанные с писателями жившими на территории Ульяновской области.
+            </p>
             <div className="row col-12">
                 <div className="col-2">
                     <h3>Маршруты</h3>

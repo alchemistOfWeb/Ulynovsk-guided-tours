@@ -16,13 +16,13 @@ code {
 .main-wrapper {
     width: 100%;
     min-height: 100vh;
-    background-blend-mode: darken;
+    // background-blend-mode: darken;
     background-color: $background-color;
-    /* background-image: url(images/forum.jpg); */
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    background-image: url(images/thai_pattern_transparent.png); 
+    // background-position: center;
+    background-size: 300px 300px;
+    // background-attachment: fixed;
+    background-repeat: repeat;
 }
   
 .content-section {

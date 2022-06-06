@@ -58,7 +58,7 @@ export default function Navbar() {
                     className="btn btn-outline-light me-2 text-decoration-none btn-dark-light"
                     id="signin-btn"
                 >
-                    Login
+                    Войти
                 </Link>
                 <Link 
                     to="/signup" 
@@ -66,7 +66,7 @@ export default function Navbar() {
                     className="btn btn-warning text-dark text-decoration-none"
                     id="signup-btn"
                 >
-                    Signup
+                    Регистрация
                 </Link>
             </>
         )

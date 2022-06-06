@@ -33,15 +33,7 @@ const reports = [
 
 
 const Home = () => {
-    window.ymaps.ready(()=>{
-        console.log('hello world!');
-        var myMap = new window.ymaps.Map("map", {
-            center: [54.318542, 48.397557],
-            zoom: 12,
-        });
-        var myPlacemark = new window.ymaps.Placemark([54.316835, 48.402997]);
-        myMap.geoObjects.add(myPlacemark);
-    })
+    
     return (
         <>
 
