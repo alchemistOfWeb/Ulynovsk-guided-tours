@@ -1,4 +1,36 @@
 import React from 'react';
+import ReportList from './components/ReportList';
+
+
+
+const defaultImg = 'https://thunderbird-mozilla.ru/images/big-images/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird.jpg';
+const reports = [
+    {
+        id: 1,
+        content: "Удобное, легкое в использовании приложение. Приятный для восприятия интерфейс. Благодаря возможности выбора нужных литературных мест, а также последующего построенного маршрута, экскурсия для первоклассников прошла быстро и занимательно. Дети были очень заинтересованы и остались довольными", 
+        author: {full_name: "Классный руководитель 1А-класса Медведева И.А. (МОУ СОШ с.Калда) "}, 
+        img: defaultImg
+    },
+    {
+        id: 2,
+        content: "Добрый день. Как родительница одного из учеников, которая сопровождала класс на экскурсию, была приятно удивлена тем, что все прошло занимательно и интересно, а возможность выбирать маршрут уже из готового списка очень обрадовала", 
+        author: {full_name: "Скворцова А.К."},
+        img: defaultImg
+    },
+    {
+        id: 3,
+        content: "Приложение работает корректно. Удобно, что не надо ничего скачивать, и все можно просмотреть прямо через браузер", 
+        author: {full_name: "Классный руководитель 1Б-Класса Боков П.П."},
+        img: defaultImg
+    },
+    {
+        id: 4,
+        content: "Удобное, легкое в использовании приложение. Приятный для восприятия интерфейс. Благодаря возможности выбора нужных литературных мест, а также последующего построенного маршрута, экскурсия для первоклассников прошла быстро и занимательно. Дети были очень заинтересованы и остались довольными", 
+        author: {full_name: "Кто-то ещё"},
+        img: defaultImg
+    },
+];
+
 
 const Home = () => {
     window.ymaps.ready(()=>{
@@ -7,42 +39,24 @@ const Home = () => {
             center: [54.318542, 48.397557],
             zoom: 12,
         });
+        var myPlacemark = new window.ymaps.Placemark([54.316835, 48.402997]);
+        myMap.geoObjects.add(myPlacemark);
     })
     return (
         <>
+
+        <p>
+            Информация про удобное приложение. Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.
+        </p>
         <div className="d-flex justify-content-center">
-            <h1>Home</h1>
+            <h1 className="text-center">Отзывы</h1>
+            <ReportList data={reports} />
         </div>
-        <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores voluptates saepe hic sapiente soluta quidem amet ratione, deserunt ad laboriosam nobis veniam similique sequi velit exercitationem esse dolor doloribus totam quos illo. Iste facilis earum iusto omnis optio nobis sed necessitatibus amet vel repellendus quod ut aliquam, ad dolore blanditiis.
-        </p>
-        <div className="row">
-            <div className="col-2">
-                <h3>Маршруты</h3>
-                <ul className="list-group">
-                    <li className="list-group-item">Cras justo odio</li>
-                    <li className="list-group-item">Dapibus ac facilisis in</li>
-                    <li className="list-group-item">Morbi leo risus</li>
-                    <li className="list-group-item">Porta ac consectetur ac</li>
-                    <li className="list-group-item">Vestibulum at eros</li>
-                </ul>
-            </div>
-            <div className="col-8" id="map" style={{width: '600px', height: '400px'}}></div>
-            <div className="col-2">
-                <h3>Точки</h3>
-                <ul className="list-group">
-                    <li className="list-group-item">Cras justo odio</li>
-                    <li className="list-group-item">Dapibus ac facilisis in</li>
-                    <li className="list-group-item">Morbi leo risus</li>
-                    <li className="list-group-item">Porta ac consectetur ac</li>
-                    <li className="list-group-item">Vestibulum at eros</li>
-                </ul>
-            </div>
-        </div>
-        <h3 className='text-center mt-3'>Описание достопримечательности</h3>
-        <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores voluptates saepe hic sapiente soluta quidem amet ratione, deserunt ad laboriosam nobis veniam similique sequi velit exercitationem esse dolor doloribus totam quos illo. Iste facilis earum iusto omnis optio nobis sed necessitatibus amet vel repellendus quod ut aliquam, ad dolore blanditiis.
-        </p>
+
+
+
+        
+        
         </>
     );
 };
