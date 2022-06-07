@@ -15,5 +15,4 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
-    re_path(r'^_nested_admin/', include('nested_admin.urls')),
 ] + router.urls

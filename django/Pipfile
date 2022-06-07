@@ -9,6 +9,11 @@ pillow = "*"
 python-dotenv = "*"
 django-ckeditor = "*"
 django-imagekit = "*"
+djangorestframework = "*"
+django-filter = "*"
+markdown = "*"
+djoser = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

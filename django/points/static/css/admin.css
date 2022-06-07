@@ -1,0 +1,39 @@
+body {
+    background-color: #4f5156 !important;
+    line-height: 1.2 !important;
+    font-size: 14px !important;
+    font-family: "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif !important;
+}
+
+.results {
+    padding: 10px;
+    background-color: #353b4a;
+}
+
+.django-ckeditor-widget {
+    width: 100%;
+}
+
+.cke_browser_webkit {
+    width: 100%;
+}
+
+.django-ckeditor-widget div[role=application] {
+    width: 100% !important;
+}
+
+.module h3 {
+    margin-top: 0.1em;
+}
+
+#content h1 {
+    font-weight: 300 !important;
+    font-size: 20px !important;
+    color: var(--body-quiet-color) !important;
+}
+
+#content h2 {
+    font-weight: bold !important;
+    font-size: 16px !important;
+    color: var(--body-quiet-color) !important;
+}
