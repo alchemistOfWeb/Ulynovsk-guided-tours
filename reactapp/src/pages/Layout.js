@@ -1,19 +1,21 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
-import Navbar from './components/Navbar';
+import SNavbar from './components/SNavbar';
 import Footer from './components/Footer';
 
 const Layout = () => {
   return (
-    <div className="main-wrapper text-light">
-      <Navbar/>
-      <div className="container-fluid">
-        <div className="mt-3">
-          <Outlet />
+    <>
+      <div className="main-wrapper text-light">
+        <SNavbar/>
+        <div className="container-fluid">
+          <div className="mt-3">
+            <Outlet />
+          </div>
         </div>
       </div>
       <Footer/>
-    </div>
+    </>
   )
 };
 

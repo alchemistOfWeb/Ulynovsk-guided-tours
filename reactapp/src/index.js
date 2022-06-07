@@ -12,7 +12,8 @@ import Home from './pages/Home';
 import About from './pages/About';
 import NoPage from './pages/NoPage';
 import Map from './pages/Map';
-
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 import reportWebVitals from './reportWebVitals';
 
 export default function App() {
@@ -23,6 +24,8 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="map" element={<Map />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route path="signin" element={<SignIn />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
