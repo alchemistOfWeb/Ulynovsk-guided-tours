@@ -1,0 +1,18 @@
+:root {
+    --selected-row: #dbeced;
+}
+
+#changelist .actions {
+    background: var(--darkened-bg) !important;
+}
+#changelist .paginator {
+    background: var(--darkened-bg) !important;
+}
+
+#nav-filter::placeholder {
+    color: rgb(184, 194, 196);
+}
+
+#result_list td {
+    filter: drop-shadow(0px 0px 4px black);
+}

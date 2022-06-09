@@ -8,10 +8,10 @@ const Layout = () => {
     <>
       <div className="main-wrapper text-light">
         <SNavbar/>
-        <div className="container-fluid">
-          <div className="mt-3">
+        <div className="container-fluid overflow-auto">
+          {/* <div className="mt-3"> */}
             <Outlet />
-          </div>
+          {/* </div> */}
         </div>
       </div>
       <Footer/>

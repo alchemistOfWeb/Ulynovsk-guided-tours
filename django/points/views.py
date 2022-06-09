@@ -22,14 +22,13 @@ class PathViewSet(viewsets.ViewSet):
     serializer_class = PathSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def filter_queryset(self, queryset):
-        for backend in self.filter_backends:
-            queryset = backend().filter_queryset(self.request, queryset, view=self)
-
-        return queryset
+    # def filter_queryset(self, queryset):
+    #     for backend in self.filter_backends:
+    #         queryset = backend().filter_queryset(self.request, queryset, view=self)
+    #     return queryset
 
     def list(self, request):
-        serializer = self.serializer_class(self.filter_queryset(self.queryset), many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         ctx = {'paths': serializer.data}
         return Response(data=ctx, status=status.HTTP_200_OK)
 

@@ -1,8 +1,33 @@
 body {
-    background-color: #4f5156 !important;
+    --body-bg: #87b5d1;
+    --darkened-bg: #437391;
+    --link-fg: #213a4a;
+    background-color: --body-bg !important;
+    background-image: url(../img/thai_pattern_transparent.png); 
+    background-size: 300px 300px;
+    background-repeat: repeat;
+    /* background-clip: content-box; */
+    background-blend-mode: multiply;
     line-height: 1.2 !important;
     font-size: 14px !important;
     font-family: "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif !important;
+}
+
+
+.dashboard .module table td a {
+    filter: drop-shadow(0px 0px 4px black);
+}
+
+th, td {
+    font-size: 14px;
+}
+
+a:link, a:visited {
+    color: #18242a;
+}
+
+tr:nth-child(odd) {
+    background: var(--body-bg);
 }
 
 .results {
@@ -27,13 +52,21 @@ body {
 }
 
 #content h1 {
-    font-weight: 300 !important;
+    /* font-weight: 300 !important;
     font-size: 20px !important;
-    color: var(--body-quiet-color) !important;
+    color: var(--body-quiet-color) !important; */
+    font-weight: 600 !important;
+    font-size: 20px !important;
+    color: #22364a !important;
+    text-shadow: 0 1px 3px #ffa51d, 0 -1px 2px #ffa51d;
 }
 
 #content h2 {
     font-weight: bold !important;
     font-size: 16px !important;
     color: var(--body-quiet-color) !important;
+}
+
+#branding {
+    font-size: 26px;
 }

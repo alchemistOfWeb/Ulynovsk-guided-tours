@@ -19,10 +19,10 @@ code {
     // background-blend-mode: darken;
     background-color: $background-color;
     background-image: url(images/thai_pattern_transparent.png); 
-    // background-position: center;
     background-size: 300px 300px;
-    // background-attachment: fixed;
     background-repeat: repeat;
+    // background-position: center;
+    // background-attachment: fixed;
 }
   
 .content-section {
@@ -93,4 +93,8 @@ code {
     .footer-inner {
         padding: 30px;
     }
+}
+
+.attraction-description {
+    background-color: #25272a7f;
 }
