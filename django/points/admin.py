@@ -6,7 +6,7 @@ admin.site.site_header = 'Приложение для экскурсовода'
 
 
 class PointAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'category', 'long', 'lat', 'works']
+    list_display = ['title', 'category', 'long', 'lat', 'works']
     list_filter = ['category',]
 
 
@@ -19,19 +19,20 @@ class PointInPathInLine(admin.TabularInline):
     model = PointInPath
     verbose_name = "Точка на карте"
     verbose_name_plural = "Точки на карте"
+    extra = 0
 
 
 class PathAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'created_at', 'updated_at', 'works']
-    inlines = [PointInPathInLine]
+    list_display = ['title', 'created_at', 'updated_at', 'works']
+    inlines = [PointInPathInLine]    
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title',]
+    list_display = ['title',]
 
 
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title']
+    list_display = ['title']
 
 
 admin.site.register(Point, PointAdmin)

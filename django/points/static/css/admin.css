@@ -1,8 +1,9 @@
 body {
-    --body-bg: #87b5d1;
-    --darkened-bg: #437391;
-    --link-fg: #213a4a;
-    background-color: --body-bg !important;
+    /* --body-bg: #87b5d1; */
+    /* --darkened-bg: #437391; */
+    /* --darkened-bg: #437391; */
+    /* --link-fg: #213a4a;  */
+    background-color: #87b5d1 !important;
     background-image: url(../img/thai_pattern_transparent.png); 
     background-size: 300px 300px;
     background-repeat: repeat;
@@ -13,26 +14,41 @@ body {
     font-family: "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif !important;
 }
 
-
-.dashboard .module table td a {
-    filter: drop-shadow(0px 0px 4px black);
+#changelist {
+    background-color: #ffffff00;
 }
+
+/* #changelist .actions {
+    box-sizing: border-box;
+} */
+
+#changelist * {
+    box-sizing: border-box;
+}
+/* #changelist-form .results {
+    box-sizing: border-box;
+} */
+
+
+/* .dashboard .module table td a {
+    filter: drop-shadow(0px 0px 4px black);
+} */
 
 th, td {
     font-size: 14px;
 }
 
-a:link, a:visited {
+/* a:link, a:visited {
     color: #18242a;
-}
+} */
 
-tr:nth-child(odd) {
+/* tr:nth-child(odd) {
     background: var(--body-bg);
-}
+} */
 
 .results {
     padding: 10px;
-    background-color: #353b4a;
+    background-color: #191a1e98;
 }
 
 .django-ckeditor-widget {

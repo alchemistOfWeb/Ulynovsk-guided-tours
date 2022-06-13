@@ -25,6 +25,7 @@ function Point({value, title}) {
 
 function PointsSelect({pathId, points, htmlId}) {
     const handleSelectPoint = (e) => {
+        console.log(e.target.value);
         let point = points.find((val, ind) => val.id == e.target.value);
         let title = point.title;
         let desc = point.descrition;
@@ -34,7 +35,7 @@ function PointsSelect({pathId, points, htmlId}) {
     };
 
     return (
-        <Form.Select className="points-select" id={htmlId} htmlSize={10} onSelect={handleSelectPoint}>
+        <Form.Select className="points-select" id={htmlId} htmlSize={10} onChange={handleSelectPoint}>
             {points.map((el, ind) => {return <Point value={el.id} title={el.title}/>})}
         </Form.Select>
     )
@@ -60,6 +61,7 @@ export default function Map() {
     })
 
     const handleSelectPath = (e) => {
+        console.log(e.target.value)
         let pointsListId = `points-list-${e.target.value}`;
         jquery('point-selects-list points-select').removeClass(['show', 'active']);
         jquery(`#${pointsListId}`).addClass(['show', 'active']);
@@ -93,7 +95,7 @@ export default function Map() {
                     <div className="row">
                         <div className="col-12 col-md-3 pb-3 pb-md-0">
                             <h3 className="text-center">Маршруты</h3>
-                            <Form.Select htmlSize={10} onSelect={handleSelectPath}>
+                            <Form.Select htmlSize={10} onChange={handleSelectPath}>
                                 {pathsList.map((el, ind) => {
                                     return <option value={el.id}>По центру города</option>
                                 })}
@@ -121,8 +123,7 @@ export default function Map() {
                     <div className="point-description" id="point-description-section">
                         <h4 className="point-description__title text-center" id="point-description-title"></h4>
                         <div className="point-description__content" id="point-description-content">
-                            Выберите любой маршрут (слева - на пк, сверху - на устройстве с маленким экраном), а затем нажмите на достопримечательность (справа - на пк, снизу - на устройстве с маленким экраном)
-
+                            Выберите любой маршрут (слева - на пк, сверху - на устройстве с маленьким экраном), а затем нажмите на достопримечательность (справа - на пк, снизу - на устройстве с маленьким экраном)
                         </div>
                     </div>
                 </Container>

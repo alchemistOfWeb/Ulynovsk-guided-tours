@@ -30,7 +30,7 @@ class Category(models.Model):
 
 class Point(models.Model):
     title = models.CharField('заголовок', max_length=512, blank=False, null=False)
-    description = RichTextUploadingField('описание', max_length=4096, blank=True, default='', null=False)
+    description = RichTextUploadingField(verbose_name='описание', max_length=4096, blank=True, default='', null=False)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name='points', blank=True, null=False)
     main_img = models.ForeignKey('points.Image', 
                                  on_delete=models.DO_NOTHING, 

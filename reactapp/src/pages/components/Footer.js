@@ -8,6 +8,13 @@ import vk_icon from "../../images/social_icons/vk.ico";
 import whatsapp_icon from '../../images/social_icons/whatsapp.ico';
 
 
+function handleClickReportLink(e) {
+    if (!window.user) {
+        e.preventDefault();
+        alert('Прежде чем оставлять отзывы вам необходимо зарегистрироваться')
+    }
+}
+
 export default function Footer() {
 
     let telStr = "79626330000";
@@ -59,7 +66,7 @@ export default function Footer() {
                 </div>
                 <div className="col-4 d-flex flex-column align-items-center">
                     <h4 className="">
-                        <Link to="/report" className="text-light">
+                        <Link to="/report" className="text-light" onClick={handleClickReportLink}>
                             Оставить отзыв
                         </Link>
                     </h4>
