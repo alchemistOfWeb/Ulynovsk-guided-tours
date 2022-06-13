@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { crdRequest, getCookie, deleteCookie } from "../../functions";
 import { BACKEND_ROOT_URL } from "../../setting";
 import React from "react";
-import { ListGroup } from "react-bootstrap";
+import { ListGroup, Container } from "react-bootstrap";
 import telegram_icon from "../../images/social_icons/telegram.ico";
 import vk_icon from "../../images/social_icons/vk.ico";
 import whatsapp_icon from '../../images/social_icons/whatsapp.ico';
@@ -14,8 +14,9 @@ export default function Footer() {
     let emailStr = "nikitakzntcv@gmail.com";
     return (
         <footer id="footer">
-            <div className="footer-inner container-fluid">
-                <div className="col-4">
+
+            <Container className="footer-inner py-4 d-flex">
+                <div className="col-4 d-flex flex-column align-items-center">
                     <h5>Контакты:</h5>
                     <ListGroup variant="flush" className="list-unstyled contacts-list">
                         <ListGroup.Item>
@@ -25,6 +26,8 @@ export default function Footer() {
                             <a href={`mailto:${emailStr}`}>{emailStr}</a>
                         </ListGroup.Item>
                     </ListGroup>
+                </div>
+                <div className="col-4 d-flex flex-column align-items-center">
                     <h5>Соцсети:</h5>
                     <ListGroup horizontal className="list-unstyled social-icons">
                         <ListGroup.Item>
@@ -54,7 +57,14 @@ export default function Footer() {
                         </ListGroup.Item>
                     </ListGroup>
                 </div>
-            </div> 
+                <div className="col-4 d-flex flex-column align-items-center">
+                    <h4 className="">
+                        <Link to="/report" className="text-light">
+                            Оставить отзыв
+                        </Link>
+                    </h4>
+                </div>
+            </Container>
         </footer>
     )
 }

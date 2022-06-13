@@ -14,6 +14,7 @@ import NoPage from './pages/NoPage';
 import Map from './pages/Map';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Report from './pages/Report';
 import reportWebVitals from './reportWebVitals';
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="map" element={<Map />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="signin" element={<SignIn />} />
+          <Route path="report" element={<SignIn />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
