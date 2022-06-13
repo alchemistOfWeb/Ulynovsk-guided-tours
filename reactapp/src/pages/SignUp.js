@@ -60,6 +60,7 @@ export default function SignUp() {
                         className="form-control" 
                         placeholder="Логин" 
                         required autofocus=""
+                        onChange={(e)=>{setUsername(e.target.value)}}
                     />
                     <div className="error-list  d-flex flex-column"></div>
                 </div>
@@ -70,6 +71,7 @@ export default function SignUp() {
                         className="form-control" 
                         placeholder="Email" 
                         required autofocus=""
+                        onChange={(e)=>{setEmail(e.target.value)}}
                     />
                     <div className="error-list d-flex flex-column"></div>
                 </div>
@@ -80,6 +82,7 @@ export default function SignUp() {
                         className="form-control" 
                         placeholder="Пароль" 
                         required
+                        onChange={(e)=>{setPassword(e.target.value)}}
                     />
                     <div className="error-list d-flex flex-column"></div>
                 </div>
@@ -90,13 +93,9 @@ export default function SignUp() {
                         className="form-control" 
                         placeholder="Повторите пароль" 
                         required
+                        onChange={(e)=>{setConfirmPassword(e.target.value)}}
                     />
                     <div className="error-list d-flex flex-column"></div>
-                </div>
-                <div className="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"/> Запомнить меня
-                </label>
                 </div>
                 <p>
                     Уже зарегистрированы? Вы можете 

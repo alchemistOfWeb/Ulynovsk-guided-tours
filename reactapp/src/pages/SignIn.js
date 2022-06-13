@@ -104,7 +104,7 @@ export default function SignIn() {
                 </div>
                 <div className="checkbox mb-3">
                 <label>
-                    <input type="checkbox" value="remember-me"/>Запомнить меня
+                    <input type="checkbox" value="remember-me"/> Запомнить меня
                 </label>
                 </div>
                 <p>Ещё не зарегистровались?  

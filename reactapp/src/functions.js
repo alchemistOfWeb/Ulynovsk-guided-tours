@@ -104,9 +104,6 @@ export async function request(method, path, data={}, headers={}, options={}) {
         .then((response) => {
             return response.json();
         })
-        .then((data) => {
-            return data;
-        });
 }
 
 export function getAccessToken() {

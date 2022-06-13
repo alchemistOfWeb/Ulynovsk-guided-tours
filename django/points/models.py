@@ -1,4 +1,17 @@
 from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
+import ckeditor
+from django.contrib.auth.models import User
+
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=True)
+    job = models.CharField(max_length=255, verbose_name='Род деятельности', null=True, blank=True)
+    phone = models.CharField(max_length=12, verbose_name='Телефон', null=False, default="", blank=True)
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
 
 
 class Category(models.Model):
@@ -17,7 +30,7 @@ class Category(models.Model):
 
 class Point(models.Model):
     title = models.CharField('заголовок', max_length=512, blank=False, null=False)
-    description = models.TextField('описание', max_length=4096, blank=True, null=False)
+    description = RichTextUploadingField('описание', max_length=4096, blank=True, default='', null=False)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name='points', blank=True, null=False)
     main_img = models.ForeignKey('points.Image', 
                                  on_delete=models.DO_NOTHING, 
@@ -77,3 +90,24 @@ class PointInPath(models.Model):
 
     def __str__(self) -> str:
         return f'{self.point.title}|{self.path.title}'
+
+
+class RateChoices(models.IntegerChoices):
+    VERY_BAD = 1, 'очень плохо'
+    BAD = 2, 'плохо'
+    NORMAL = 3, 'нормально'
+    GOOD = 4, 'хорошо'
+    EXCELENT = 5, 'отлично'
+    
+
+class Report(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор', related_name='reports')
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
+    content = ckeditor.fields.RichTextField(max_length=1000, null=True, blank=True)
+    rate = models.PositiveSmallIntegerField(choices=RateChoices.choices, null=True, blank=True)
+    doshow = models.BooleanField(verbose_name='Показывать на главной', null=False, blank=True, default=False)
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'

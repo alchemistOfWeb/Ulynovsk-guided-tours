@@ -1,10 +1,54 @@
 import React from "react";
+import { BACKEND_ROOT_URL } from "../setting";
+import { getCookie, request, deleteCookie} from "../functions";
 import skver_img from '../images/skver_Karamzin.jpg';
-import { Container, Nav, ListGroup, Tab, TabContent } from "react-bootstrap";
+import { Container, Nav, ListGroup, Tab, TabContent, Form, Spinner } from "react-bootstrap";
 import jquery from "jquery";
+import { useState } from "react";
+import parseHtml from 'html-react-parser';
+import { useAsync } from 'react-async';
+
+// function PointDescription({point}) {
+//     return (
+//         <div className="point-description" id="point-description-section">
+//             <h4 className="point-description__title text-center">{point.title}</h4>
+//             <div className="point-description__content">{parseHtml(point.description)}</div>
+//         </div>
+//     )
+// }
+
+function Point({value, title}) {
+    return (
+        <option value={value}>{title}</option>
+    )
+}
+
+function PointsSelect({pathId, points, htmlId}) {
+    const handleSelectPoint = (e) => {
+        let point = points.find((val, ind) => val.id == e.target.value);
+        let title = point.title;
+        let desc = point.descrition;
+
+        jquery('#point-description-title').text(title) ;
+        jquery('#point-description-content').html(desc);
+    };
+
+    return (
+        <Form.Select className="points-select" id={htmlId} htmlSize={6} onSelect={handleSelectPoint}>
+            {points.map((el, ind) => {return <Point value={el.id} title={el.title}/>})}
+        </Form.Select>
+    )
+}
+
+async function loadPathsList(options) {
+    // let headers = {'Authorization': getCookie('access_token')};
+    let url = `${BACKEND_ROOT_URL}paths/`;
+    const res = await request('GET', url, {}, {}, {signal: options.signal})
+    console.log({res})
+    return res;
+}
 
 export default function Map() {
-
     window.ymaps.ready(()=>{
         console.log('hello world!');
         var myMap = new window.ymaps.Map("map", {
@@ -15,131 +59,71 @@ export default function Map() {
         myMap.geoObjects.add(myPlacemark);
     })
 
-    return (
-        <div id="paths-section overflow-auto">
-            <Container>
-                <h3 className="text-center">Карта достопримечательностей</h3>
-                <p>
-                    Здесь представленна интерактивная карта. На ней отмечены значимые места и достопримечательности связанные с писателями жившими на территории Ульяновской области.
-                </p>
-                <hr />
-                <div className="row">
-                    <div className="col-12 col-md-3 pb-3 pb-md-0">
-                        <h3 className="text-center">Маршруты</h3>
-                        <Tab.Container onSelect={(eventKey, e)=>{
-                            e.preventDefault();
-                            console.log(e)
-                            jquery('#points-list .tab-pane').removeClass(['show', 'active']);
-                            const el = jquery(eventKey);
-                            console.log({el});
-                            el.addClass(['show', 'active']);
-                            
-                        }}>
-                        <ListGroup>
-                            <ListGroup.Item action href="#path_1" on>
-                                По центру города
-                            </ListGroup.Item>
-                            <ListGroup.Item action href="#path_2">
-                                До Винновки
-                            </ListGroup.Item>
-                            <ListGroup.Item action href="#path_3">
-                                Тестовый маршрут 3
-                            </ListGroup.Item>
-                        </ListGroup>
-                        </Tab.Container>
-                        {/* <ul className="list-group">
-                            <li className="list-group-item active">По центру города</li>
-                            <li className="list-group-item">До Винновки</li>
-                            <li className="list-group-item">Тестовый маршрут 3</li>
-                            <li className="list-group-item">Тестовый маршрут 4</li>
-                            <li className="list-group-item">Тестовый маршрут 5</li>
-                        </ul> */}
+    const handleSelectPath = (e) => {
+        let pointsListId = `points-list-${e.target.value}`;
+        jquery('point-selects-list points-select').removeClass(['show', 'active']);
+        jquery(`#${pointsListId}`).addClass(['show', 'active']);
+    }
+
+    const { data, error, isPending } 
+        = useAsync({ promiseFn: loadPathsList });
+
+    if (isPending) {
+        return (
+            <div className="d-flex align-items-center justify-content-center pt-5">
+                <Spinner animation="border" variant="info" size="xl"/>
+            </div>
+        )
+    }
+    if (error) {
+        console.log({error})
+        return <h1 className="text-danger">Error of loading sections.</h1>
+    }    
+    if (data) {
+        let pathsList = data.paths;
+    
+        return (
+            <div id="paths-section overflow-auto">
+                <Container>
+                    <h3 className="text-center">Карта достопримечательностей</h3>
+                    <p>
+                        Здесь представленна интерактивная карта. На ней отмечены значимые места и достопримечательности связанные с писателями жившими на территории Ульяновской области.
+                    </p>
+                    <hr />
+                    <div className="row">
+                        <div className="col-12 col-md-3 pb-3 pb-md-0">
+                            <h3 className="text-center">Маршруты</h3>
+                            <Form.Select htmlSize={6} onSelect={handleSelectPath}>
+                                {pathsList.map((el, ind) => {
+                                    return <option value={el.id}>По центру города</option>
+                                })}
+                                <option value={1}>По центру города</option>
+                                <option value={2}>До Винновки</option>
+                                <option value={3}>Тестовый маршрут 3</option>
+                            </Form.Select>
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <div className="border rounded overflow-hidden" id="map" style={{height: '400px'}}></div>
+                        </div>
+                        <div className="col-12 col-md-3" id="points-list">
+                            <h4 className="text-center">достопримечательности</h4>
+                            <div className="point-selects-list" id="point-selects-list">
+                                {pathsList.map((el, ind) => {
+                                    return <PointsSelect path={el} htmlId={`points-list-${el.id}`}/>
+                                })}
+                            </div>
+                        </div>
                     </div>
-                    <div className="col-12 col-md-6">
-                        <div className="border rounded overflow-hidden" id="map" style={{height: '400px'}}></div>
+                </Container>
+                <Container id="attraction-description" className="attraction-description my-3 border border-solid rounded overflow-auto">
+                    <h3 className='text-center'>Описание достопримечательности:</h3>
+                    {/* {<PointDescription/>} */}                
+                    <div className="point-description" id="point-description-section">
+                        <h4 className="point-description__title text-center" id="point-description-title"></h4>
+                        <div className="point-description__content" id="point-description-content"></div>
                     </div>
-                    <div className="col-12 col-md-3" id="points-list">
-                        <h3 className="text-center">Точки</h3>
-                        {/* <Tab.Container onSelect={(eventKey, e)=>{
-                            e.preventDefault();
-                            console.log(e)
-                            jquery('#points-list .tab-pane').removeClass(['show', 'active']);
-                            const el = jquery(eventKey);
-                            console.log({el});
-                            el.addClass(['show', 'active']);
-                            
-                        }}> */}
-                            <Tab.Content>
-                            <Tab.Pane eventKey="#path1" id={`path_${1}`}>
-                                <ListGroup>
-                                    <ListGroup.Item action href="#point1">
-                                        Сквер Карамзина
-                                    </ListGroup.Item>
-                                    <ListGroup.Item action href="#point2">
-                                        Дом Карамзина
-                                    </ListGroup.Item>
-                                    <ListGroup.Item action href="#point3">
-                                        Парк Горького
-                                    </ListGroup.Item>
-                                </ListGroup>
-                            </Tab.Pane>
-                            <Tab.Pane eventKey="#path2" id={`path_${2}`}>
-                                <ListGroup>
-                                    <ListGroup.Item action href="#point4">
-                                        Сквер Карамзина
-                                    </ListGroup.Item>
-                                    <ListGroup.Item action href="#point3">
-                                        Парк Горького
-                                    </ListGroup.Item>
-                                </ListGroup>
-                            </Tab.Pane>
-                            <Tab.Pane eventKey="#path3" id={`path_${3}`}>
-                                <ListGroup>
-                                    <ListGroup.Item action href="#point1">
-                                        Сквер Карамзина
-                                    </ListGroup.Item>
-                                    <ListGroup.Item action href="#point2">
-                                        Дом Карамзина
-                                    </ListGroup.Item>
-                                    <ListGroup.Item action href="#point3">
-                                        Парк Горького
-                                    </ListGroup.Item>
-                                </ListGroup>
-                            </Tab.Pane>
-                            </Tab.Content>
-                        {/* </Tab.Container> */}
-                    </div>
-                </div>
-            </Container>
-            <Container id="attraction-description" className="attraction-description my-3 border border-solid rounded overflow-auto">
-                <h3 className='text-center'>Описание достопримечательности:</h3>
-                <Tab.Content>
-                    <Tab.Pane eventKey="#point1">
-                        <h4 className='text-center'>Сквер Карамзина</h4>
-                        <img src={skver_img} alt="no img" style={{float: 'left', paddingRight: '30px'}}/>
-                        <p>
-                            В 1866-1869 гг. по проекту архитектора Н.А. Любимого вокруг памятника Н.М. Карамзину в Симбирске был разбит сквер, который окружала живая изгородь из жёлтой акации и сирени – любимого кустарника Н.М. Карамзина. Вдоль аллей были высажены берёзы, вязы, рябины, вишни, дикие груши. В 1868 г. сквер был обнесён чугунной оградой, спроектированной Н.А. Любимовым, в 1867 г. она была отлита в мастерской Н.В. Голубкова и установлена на цоколь из ташлинского камня, а ещё через год в сквере поставили скамейки, построили беседку. Карамзинский сквер – единственный парковый комплекс в исторической части города, в котором сохранились древесные насаждения 1860-1880-х гг.  Первоначальная площадь сквера – 0, 74 га. В 30-е годы 20 века ограда по восточной стороне сквера была разобрана, и площадь сквера увеличилась до 1,16 га.
-                        </p>
-                        <p>
-                            В 1866-1869 гг. по проекту архитектора Н.А. Любимого вокруг памятника Н.М. Карамзину в Симбирске был разбит сквер, который окружала живая изгородь из жёлтой акации и сирени – любимого кустарника Н.М. Карамзина. Вдоль аллей были высажены берёзы, вязы, рябины, вишни, дикие груши. В 1868 г. сквер был обнесён чугунной оградой, спроектированной Н.А. Любимовым, в 1867 г. она была отлита в мастерской Н.В. Голубкова и установлена на цоколь из ташлинского камня, а ещё через год в сквере поставили скамейки, построили беседку. Карамзинский сквер – единственный парковый комплекс в исторической части города, в котором сохранились древесные насаждения 1860-1880-х гг.  Первоначальная площадь сквера – 0, 74 га. В 30-е годы 20 века ограда по восточной стороне сквера была разобрана, и площадь сквера увеличилась до 1,16 га.
-                        </p>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="#point2">
-                        <h4 className='text-center'>Дом Карамзина</h4>
-                        <img src={skver_img} alt="no img" style={{float: 'left', paddingRight: '30px'}}/>
-                        <p>
-                            В 1866-1869 гг. по проекту архитектора Н.А. Любимого вокруг памятника Н.М. Карамзину в Симбирске был разбит сквер, который окружала живая изгородь из жёлтой акации и сирени – любимого кустарника Н.М. Карамзина. Вдоль аллей были высажены берёзы, вязы, рябины, вишни, дикие груши. В 1868 г. сквер был обнесён чугунной огр
-                        </p>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="#point3">
-                        <h4 className='text-center'>Парк Горького</h4>
-                        <img src={skver_img} alt="no img" style={{float: 'left', paddingRight: '30px'}}/>
-                        <p>
-                            В 1866-1869 гг. по проекту архитектора Н.А. Любимого вокруг памятника Н.М. Карамзину в Симбирске был разбит сквер, который окружала живая изгородь из жёлтой акации и сирени – любимого кустарника Н.М. Карамзина. Вдоль аллей были высажены берёзы, вязы, рябины, вишни, дикие груши. В 1868 г. сквер был обнесён ч
-                        </p>
-                    </Tab.Pane>
-                </Tab.Content>
-            </Container>
-        </div>
-    )
+                </Container>
+            </div>
+        )
+    }
 }

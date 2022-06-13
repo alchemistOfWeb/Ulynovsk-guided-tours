@@ -1,6 +1,9 @@
 import React from 'react';
 import ReportList from './components/ReportList';
-
+import { BACKEND_ROOT_URL } from '../setting';
+import { request, getCookie } from '../functions';
+import { useAsync } from 'react-async';
+import { Spinner } from 'react-bootstrap';
 
 
 const defaultImg = 'https://thunderbird-mozilla.ru/images/big-images/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird.jpg';
@@ -31,21 +34,44 @@ const reports = [
     },
 ];
 
+async function loadReportsList(options) {
+    // let headers = {'Authorization': getCookie('access_token')};
+    let url = `${BACKEND_ROOT_URL}reports/`;
+    const res = await request('GET', url, {}, {}, {signal: options.signal})
+    console.log({res})
+    return res;
+}
+
 
 const Home = () => {
-    
-    return (
-        <>
+    const { data, error, isPending } 
+        = useAsync({ promiseFn: loadReportsList });
 
-        {/* <p>
-            Информация про удобное приложение. Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.
-        </p> */}
-        <h3 className='text-center'>Отзывы</h3>
-        <div className="d-flex justify-content-center">
-            <ReportList data={reports} />
-        </div>
-        </>
-    );
+    if (isPending) {
+        return (
+            <div className="d-flex align-items-center justify-content-center pt-5">
+                <Spinner animation="border" variant="info" size="xl"/>
+            </div>
+        )
+    }
+    if (error) {
+        console.log({error})
+        return <h1 className="text-danger">Error of loading sections.</h1>
+    }    
+    if (data) {
+        console.log({reports: data.reports})
+        return (
+            <>
+                {/* <p>
+                    Информация про удобное приложение. Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.
+                </p> */}
+                <h3 className='text-center'>Отзывы</h3>
+                <div className="d-flex justify-content-center">
+                    <ReportList data={reports} />
+                </div>
+            </>
+        );
+    }
 };
 
 export default Home;
