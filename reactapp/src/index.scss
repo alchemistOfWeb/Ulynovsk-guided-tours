@@ -1,4 +1,4 @@
-$background-color: rgb(86, 91, 94);
+$background-color: #565b5e;
 
 body {
     margin: 0;
@@ -7,6 +7,10 @@ body {
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+    font-size: 17px;
 }
   
 code {
@@ -19,6 +23,7 @@ code {
     // background-blend-mode: darken;
     background-color: $background-color;
     background-image: url(images/thai_pattern_transparent.png); 
+    background-blend-mode: luminosity;
     background-size: 300px 300px;
     background-repeat: repeat;
     // background-position: center;
@@ -97,4 +102,13 @@ code {
 
 .attraction-description {
     background-color: #25272a7f;
+}
+
+.point-description {
+    &__content {
+        font-size: 18px;
+        font-weight: 500;
+        color:rgb(218, 218, 218);
+    }
+    padding: 5px 15px 15px 15px;
 }

@@ -34,7 +34,7 @@ function PointsSelect({pathId, points, htmlId}) {
     };
 
     return (
-        <Form.Select className="points-select" id={htmlId} htmlSize={6} onSelect={handleSelectPoint}>
+        <Form.Select className="points-select" id={htmlId} htmlSize={10} onSelect={handleSelectPoint}>
             {points.map((el, ind) => {return <Point value={el.id} title={el.title}/>})}
         </Form.Select>
     )
@@ -93,7 +93,7 @@ export default function Map() {
                     <div className="row">
                         <div className="col-12 col-md-3 pb-3 pb-md-0">
                             <h3 className="text-center">Маршруты</h3>
-                            <Form.Select htmlSize={6} onSelect={handleSelectPath}>
+                            <Form.Select htmlSize={10} onSelect={handleSelectPath}>
                                 {pathsList.map((el, ind) => {
                                     return <option value={el.id}>По центру города</option>
                                 })}
@@ -109,7 +109,7 @@ export default function Map() {
                             <h4 className="text-center">достопримечательности</h4>
                             <div className="point-selects-list" id="point-selects-list">
                                 {pathsList.map((el, ind) => {
-                                    return <PointsSelect path={el} htmlId={`points-list-${el.id}`}/>
+                                    return <PointsSelect pathId={el.id} points={el.points} htmlId={`points-list-${el.id}`}/>
                                 })}
                             </div>
                         </div>
@@ -120,7 +120,10 @@ export default function Map() {
                     {/* {<PointDescription/>} */}                
                     <div className="point-description" id="point-description-section">
                         <h4 className="point-description__title text-center" id="point-description-title"></h4>
-                        <div className="point-description__content" id="point-description-content"></div>
+                        <div className="point-description__content" id="point-description-content">
+                            Выберите любой маршрут (слева - на пк, сверху - на устройстве с маленким экраном), а затем нажмите на достопримечательность (справа - на пк, снизу - на устройстве с маленким экраном)
+
+                        </div>
                     </div>
                 </Container>
             </div>
