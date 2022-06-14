@@ -1,5 +1,6 @@
 import React from "react";
 import DayJS from 'react-dayjs';
+import parseHtml from 'html-react-parser';
 
 
 const defaultImg = 'https://thunderbird-mozilla.ru/images/big-images/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird.jpg';
@@ -29,7 +30,7 @@ export default function Report({report}){
                 </div>
     
                 <p className="mt-3 mb-0 pb-2">
-                    {report.content}
+                    {parseHtml(report.content)}
                 </p>
     
                 {/* <div className="small d-flex justify-content-start">

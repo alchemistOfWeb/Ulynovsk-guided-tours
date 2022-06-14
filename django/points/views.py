@@ -88,7 +88,7 @@ class ReportViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        serializer = self.serializer_class(self.queryset.filter(doshow=True), many=True)
         ctx = {'reports': serializer.data}
         return Response(data=ctx, status=status.HTTP_200_OK)
 

@@ -36,7 +36,7 @@ function PointsSelect({pathId, points, htmlId}) {
     };
 
     return (
-        <Form.Select className="d-none points-select" id={htmlId} htmlSize={10} onChange={handleSelectPoint}>
+        <Form.Select className="d-none points-select map-options-select" id={htmlId} htmlSize={10} onChange={handleSelectPoint}>
             {points.map((el, ind) => {return <Point value={el.id} title={el.title}/>})}
         </Form.Select>
     )
@@ -82,25 +82,27 @@ export default function Map() {
     if (data) {
         let pathsList = data.paths;
 
-        window.ymaps.ready(()=>{
-            console.log('hello map!');
-
-            window.myMap = new window.ymaps.Map("map", {
-                center: [54.318542, 48.397557],
-                zoom: 12,
-            });
-
-            for (let path of pathsList) {
-                console.log({path})
-                for (let point of path.points) {
-                    console.log({point});
-                    if (point.lat && point.long) {
-                        drawPoint(point.lat, point.long);
+        if (!window.myMap) {
+            window.ymaps.ready(()=>{
+                console.log('hello map!');
+    
+                window.myMap = new window.ymaps.Map("map", {
+                    center: [54.318542, 48.397557],
+                    zoom: 12,
+                });
+    
+                for (let path of pathsList) {
+                    console.log({path})
+                    for (let point of path.points) {
+                        console.log({point});
+                        if (point.lat && point.long) {
+                            drawPoint(point.lat, point.long);
+                        }
                     }
                 }
-            }
-            
-        });
+                
+            });
+        }
         
         // window.ymaps.ready(()=>{
         //     var myPlacemark = new window.ymaps.Placemark([54.316835, 48.406997]);
@@ -115,20 +117,20 @@ export default function Map() {
                         Здесь представленна интерактивная карта. На ней отмечены значимые места и достопримечательности связанные с писателями жившими на территории Ульяновской области.
                     </p>
                     <hr />
-                    <div className="row">
-                        <div className="col-12 col-md-3 pb-3 pb-md-0">
-                            <h3 className="text-center">Маршруты</h3>
-                            <Form.Select htmlSize={10} onChange={handleSelectPath}>
+                    <div className="row map-options">
+                        <div className="col-12 col-md-3 map-options__select-section">
+                            <div className="text-center map-options-select-header h5">Маршруты</div>
+                            <Form.Select className="map-options-select" htmlSize={10} onChange={handleSelectPath}>
                                 {pathsList.map((el, ind) => {
                                     return <option value={el.id}>{el.title}</option>
                                 })}
                             </Form.Select>
                         </div>
-                        <div className="col-12 col-md-6">
-                            <div className="border rounded overflow-hidden" id="map" style={{height: '400px'}}></div>
+                        <div className="col-12 col-md-6 py-3 py-md-0 px-0 px-md-3">
+                            <div className="border rounded overflow-hidden w-100" id="map" style={{height: '400px'}}></div>
                         </div>
-                        <div className="col-12 col-md-3" id="points-list">
-                            <h4 className="text-center">достопримечательности</h4>
+                        <div className="col-12 col-md-3 map-options__select-section" id="points-list">
+                            <div className="text-center map-options-select-header h5">достопримечательности</div>
                             <div className="point-selects-list" id="point-selects-list">
                                 {pathsList.map((el, ind) => {
                                     return <PointsSelect pathId={el.id} points={el.points} htmlId={`points-list-${el.id}`}/>
