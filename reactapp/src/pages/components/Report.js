@@ -1,4 +1,6 @@
 import React from "react";
+import DayJS from 'react-dayjs';
+
 
 const defaultImg = 'https://thunderbird-mozilla.ru/images/big-images/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird.jpg';
 
@@ -21,7 +23,7 @@ export default function Report({report}){
                     <div>
                         <h6 className="fw-bold text-primary mb-1">{report.user.profile.fio}</h6>
                         <p className="text-muted small mb-0">
-                        {report.updated_at}
+                        <DayJS format="MM-DD-YYYY HH:mm">{report.updated_at}</DayJS>
                         </p>
                     </div>
                 </div>

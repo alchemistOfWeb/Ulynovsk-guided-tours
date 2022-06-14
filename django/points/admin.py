@@ -1,9 +1,8 @@
 from django.contrib import admin
 from .models import Category, Point, Path, Image, PointInPath, Report, Profile
 
-# Register your models here.
-admin.site.site_header = 'Приложение для экскурсовода'
 
+admin.site.site_header = 'Приложение для экскурсовода'
 
 class PointAdmin(admin.ModelAdmin):
     list_display = ['title', 'category', 'long', 'lat', 'works']

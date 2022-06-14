@@ -6,7 +6,7 @@ import { useAsync } from 'react-async';
 import { Spinner } from 'react-bootstrap';
 
 
-const defaultImg = 'https://thunderbird-mozilla.ru/images/big-images/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird.jpg';
+// const defaultImg = 'https://thunderbird-mozilla.ru/images/big-images/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird.jpg';
 // const reports = [
 //     {
 //         id: 2,
@@ -56,9 +56,6 @@ const Home = () => {
         let reports = data.reports;
         return (
             <>
-                {/* <p>
-                    Информация про удобное приложение. Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.Информация про удобное приложение.
-                </p> */}
                 <h3 className='text-center'>Отзывы</h3>
                 <div className="d-flex justify-content-center">
                     <ReportList reports={reports} />

@@ -85,10 +85,17 @@ code {
     background-color: #25272a;
     #signin-btn, #profile-btn {
         color: white;
+        &:hover {
+            color: rgb(58, 57, 57);
+            background-color: #c9c0b6;
+        }
     }
     #signup-btn, #logout-btn {
         color:rgb(27, 27, 28);
         background-color: #a9a47c;
+        &:hover {
+            background-color: #db8a2e;
+        }
     }
 }
 

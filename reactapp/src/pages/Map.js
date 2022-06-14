@@ -28,14 +28,15 @@ function PointsSelect({pathId, points, htmlId}) {
         console.log(e.target.value);
         let point = points.find((val, ind) => val.id == e.target.value);
         let title = point.title;
-        let desc = point.descrition;
+        let desc = point.description;
+        console.log({point})
 
         jquery('#point-description-title').text(title) ;
         jquery('#point-description-content').html(desc);
     };
 
     return (
-        <Form.Select className="points-select" id={htmlId} htmlSize={10} onChange={handleSelectPoint}>
+        <Form.Select className="d-none points-select" id={htmlId} htmlSize={10} onChange={handleSelectPoint}>
             {points.map((el, ind) => {return <Point value={el.id} title={el.title}/>})}
         </Form.Select>
     )
@@ -49,22 +50,19 @@ async function loadPathsList(options) {
     return res;
 }
 
+function drawPoint(lat, long) {
+    var myPlacemark = new window.ymaps.Placemark([lat, long]);
+    window.myMap.geoObjects.add(myPlacemark);
+}
+
 export default function Map() {
-    window.ymaps.ready(()=>{
-        console.log('hello world!');
-        var myMap = new window.ymaps.Map("map", {
-            center: [54.318542, 48.397557],
-            zoom: 12,
-        });
-        var myPlacemark = new window.ymaps.Placemark([54.316835, 48.402997]);
-        myMap.geoObjects.add(myPlacemark);
-    })
+    
 
     const handleSelectPath = (e) => {
         console.log(e.target.value)
         let pointsListId = `points-list-${e.target.value}`;
-        jquery('point-selects-list points-select').removeClass(['show', 'active']);
-        jquery(`#${pointsListId}`).addClass(['show', 'active']);
+        jquery('#point-selects-list .points-select').removeClass(['show', 'active']).addClass('d-none');
+        jquery(`#${pointsListId}`).addClass(['show', 'active']).removeClass('d-none');
     }
 
     const { data, error, isPending } 
@@ -79,10 +77,35 @@ export default function Map() {
     }
     if (error) {
         console.log({error})
-        return <h1 className="text-danger">Error of loading sections.</h1>
+        return <h1 className="text-danger">Ошибка загрузки достопримечательностей.</h1>
     }    
     if (data) {
         let pathsList = data.paths;
+
+        window.ymaps.ready(()=>{
+            console.log('hello map!');
+
+            window.myMap = new window.ymaps.Map("map", {
+                center: [54.318542, 48.397557],
+                zoom: 12,
+            });
+
+            for (let path of pathsList) {
+                console.log({path})
+                for (let point of path.points) {
+                    console.log({point});
+                    if (point.lat && point.long) {
+                        drawPoint(point.lat, point.long);
+                    }
+                }
+            }
+            
+        });
+        
+        // window.ymaps.ready(()=>{
+        //     var myPlacemark = new window.ymaps.Placemark([54.316835, 48.406997]);
+        //     window.myMap.geoObjects.add(myPlacemark);
+        // });
     
         return (
             <div id="paths-section overflow-auto">
@@ -97,11 +120,8 @@ export default function Map() {
                             <h3 className="text-center">Маршруты</h3>
                             <Form.Select htmlSize={10} onChange={handleSelectPath}>
                                 {pathsList.map((el, ind) => {
-                                    return <option value={el.id}>По центру города</option>
+                                    return <option value={el.id}>{el.title}</option>
                                 })}
-                                <option value={1}>По центру города</option>
-                                <option value={2}>До Винновки</option>
-                                <option value={3}>Тестовый маршрут 3</option>
                             </Form.Select>
                         </div>
                         <div className="col-12 col-md-6">
