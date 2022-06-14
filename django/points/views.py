@@ -7,7 +7,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework import viewsets, status, permissions, generics
 from rest_framework.views import APIView
-from .serializers import PathSerializer, PointSerializer, ReportSerializer, UserSerializer
+from .serializers import (
+    PathSerializer, PointSerializer, 
+    ReportSerializer, UserSerializer, 
+    ProfileSerializer
+)
 from django.middleware.csrf import get_token
 # Create your views here.
 
@@ -22,6 +26,11 @@ def current_profile(request):
     # profile = get_object_or_404(Profile.objects, request.user.id)
     serializer = UserSerializer(request.user)
     return Response({'user': serializer.data})
+
+@api_view(['POST'])
+def create_user(request):
+    u_serializer = UserSerializer(data=request.data)
+    return Response(u_serializer.data, status=status.HTTP_201_CREATED)
 
 
 class PathViewSet(viewsets.ViewSet):
@@ -85,7 +94,8 @@ class ReportViewSet(viewsets.ViewSet):
 
     def create(self, request):
         data = request.data
-        serializer = self.serializer_class(data=data)
+        data.update({'user': request.user})
+        serializer = self.serializer_class(data=data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -98,7 +108,7 @@ class ReportViewSet(viewsets.ViewSet):
 
     def update(self, request, pk=None):
         obj = get_object_or_404(self.queryset, pk=pk)
-        serializer = self.serializer_class(obj, data=request.data)
+        serializer = self.serializer_class(obj, data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_205_RESET_CONTENT)

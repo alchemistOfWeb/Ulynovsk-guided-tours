@@ -46,8 +46,10 @@ async function loginResponse (username, password) {
 
 
 export default function SignIn() {
-    console.log('hello sign in')
-    // if (window.user) window.location.href = '/';
+    if (window.user) {
+        alert('Вы уже авторизованы! Вам нужно выйти, если вы хотите войти с другого аккаунта.')
+        window.location.href = '/';
+    }
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -58,6 +60,7 @@ export default function SignIn() {
         if (!username || !password) {
             // console.log('password field is empty');
             // inputErrors.inputPassword.push('password field is empty');
+            alert('Поля формы не должны быть пустые');
             return;
         }
 
@@ -78,7 +81,7 @@ export default function SignIn() {
 
     return (
         <main className="container mt-3 d-flex justify-content-center">
-            <form className="col-12 col-sm-6 col-md-4 bg-dark rounded p-3" onSubmit={handleSignIn}>
+            <form className="col-12 col-md-8 col-sm-9 col-lg-6 col-xl-4 bg-dark rounded p-3" onSubmit={handleSignIn}>
                 <h1 className="h3 mb-3 font-weight-normal text-center">Вход</h1>
                 <div className="mb-3">
                     <input 

@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=True, related_name='profile')
+    fio = models.CharField(max_length=255, null=False, default='', blank=True)
     job = models.CharField(max_length=255, verbose_name='Род деятельности', null=True, blank=True)
     phone = models.CharField(max_length=12, verbose_name='Телефон', null=False, default="", blank=True)
 
@@ -102,10 +103,10 @@ class RateChoices(models.IntegerChoices):
 
 class Report(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор', related_name='reports')
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True)
-    content = ckeditor.fields.RichTextField(max_length=1000, null=True, blank=True)
-    rate = models.PositiveSmallIntegerField(choices=RateChoices.choices, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Создан')
+    updated_at = models.DateTimeField(auto_now=True, blank=True, verbose_name='Обновлен')
+    content = ckeditor.fields.RichTextField(max_length=1000, null=True, blank=True, verbose_name='Текст')
+    rate = models.PositiveSmallIntegerField(choices=RateChoices.choices, null=True, blank=True, verbose_name='Оценка')
     doshow = models.BooleanField(verbose_name='Показывать на главной', null=False, blank=True, default=False)
 
     class Meta:

@@ -1,13 +1,14 @@
 import React from "react";
 
+const defaultImg = 'https://thunderbird-mozilla.ru/images/big-images/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird.jpg';
 
-export default function Report({data}){
-    var profile_img = '';
-    if (data.img) {
-        profile_img = data.img;
-    } else {
-        profile_img = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp';
-    }
+export default function Report({report}){
+    // var profile_img = '';
+    // if (data.img) {
+    //     profile_img = data.img;
+    // } else {
+    //     profile_img = defaultImg;
+    // }
 
     return (
     <li className="list-group-item list-data-item rounded mb-2">
@@ -15,18 +16,18 @@ export default function Report({data}){
             <div className="card-body">
                 <div className="d-flex flex-start align-items-center">
                     <img className="rounded-circle shadow-1-strong me-3"
-                        src={profile_img} alt="avatar" width="60"
+                        src={defaultImg} alt="avatar" width="60"
                         height="60" />
                     <div>
-                        <h6 className="fw-bold text-primary mb-1">{data.author.full_name}</h6>
-                        {/* <p className="text-muted small mb-0">
-                        Shared publicly - Jan 2020
-                        </p> */}
+                        <h6 className="fw-bold text-primary mb-1">{report.user.profile.fio}</h6>
+                        <p className="text-muted small mb-0">
+                        {report.updated_at}
+                        </p>
                     </div>
                 </div>
     
                 <p className="mt-3 mb-0 pb-2">
-                    {data.content}
+                    {report.content}
                 </p>
     
                 {/* <div className="small d-flex justify-content-start">

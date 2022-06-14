@@ -4,7 +4,7 @@ from django.conf import settings
 from .models import User, Profile
 
 
-@receiver(post_save, sender=User)
-def pre_save_board(created=None, instance=None, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+# @receiver(post_save, sender=User)
+# def pre_save_board(created=None, instance=None, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Point, Path, Image, PointInPath, Report
+from .models import Category, Point, Path, Image, PointInPath, Report, Profile
 
 # Register your models here.
 admin.site.site_header = 'Приложение для экскурсовода'
@@ -11,8 +11,11 @@ class PointAdmin(admin.ModelAdmin):
 
 
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ['user', ]
-    list_filter = ['category',]
+    list_display = ['user', 'created_at', 'updated_at']
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'fio']
 
 
 class PointInPathInLine(admin.TabularInline):
@@ -36,6 +39,8 @@ class ImageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Point, PointAdmin)
+admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Report, ReportAdmin)
 admin.site.register(Path, PathAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Image, ImageAdmin)

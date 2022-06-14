@@ -83,12 +83,12 @@ code {
 
 #header-navbar {
     background-color: #25272a;
-    #signin-btn {
+    #signin-btn, #profile-btn {
         color: white;
     }
-    #signup-btn {
+    #signup-btn, #logout-btn {
         color:rgb(27, 27, 28);
-        background-color: #b6e965;
+        background-color: #a9a47c;
     }
 }
 

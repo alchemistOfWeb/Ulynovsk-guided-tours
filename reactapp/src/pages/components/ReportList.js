@@ -1,13 +1,13 @@
 import React from "react"
 import Report from "./Report"
 
-export default function ReportList({data}) {
+export default function ReportList({reports}) {
     
     return (
         <>
             <ul className="list-group comment-list">
                 {
-                    data.map((rep, ind) => <Report data={rep} key={ind}/>)
+                    reports.map((el, ind) => <Report report={el} key={ind}/>)
                 }
             </ul>
         </>

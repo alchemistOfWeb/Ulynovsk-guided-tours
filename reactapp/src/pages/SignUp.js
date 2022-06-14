@@ -11,17 +11,21 @@ async function createuserResponse (params={}) {
         username: params.username,
         email: params.email,
         password: params.password,
+        profile: {
+            fio: params.fio
+        }
     }
-    let url = `${BACKEND_ROOT_URL}auth/users/`;
+    let url = `${BACKEND_ROOT_URL}create_user/`;
     const res = await crdRequest('POST', url, data);
-    if (!res.ok) throw new Error(res.statusText);
-    return res.json();
+    // if (!res.ok) throw new Error(res.statusText);
+    return res;
 }
 
 export default function SignUp() {
     // if (getCookie('access_token')) window.location.href = '/';
     if (window.user) window.location.href = '/';
     const [username, setUsername] = useState("");
+    const [fio, setFio] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -36,7 +40,7 @@ export default function SignUp() {
             alert("password must match confirm-password");
             return;
         }
-        createuserResponse({username, email, password})
+        createuserResponse({username, email, password, fio})
             .then((res)=>{
                 console.log(res);
 
@@ -51,7 +55,7 @@ export default function SignUp() {
 
     return (
         <main className="container mt-3 d-flex justify-content-center">
-            <form className="col-6 col-sm-4 bg-dark rounded p-3" onSubmit={handleSignUp}>
+            <form className="col-12 col-md-8 col-sm-9 col-lg-6 col-xl-4 bg-dark rounded p-3" onSubmit={handleSignUp}>
                 <h1 className="h3 mb-3 font-weight-normal text-center">Регистрация</h1>
                 <div className="mb-3">
                     <input 
@@ -61,6 +65,17 @@ export default function SignUp() {
                         placeholder="Логин" 
                         required autofocus=""
                         onChange={(e)=>{setUsername(e.target.value)}}
+                    />
+                    <div className="error-list  d-flex flex-column"></div>
+                </div>
+                <div className="mb-3">
+                    <input 
+                        type="text" 
+                        id="inputUsername" 
+                        className="form-control" 
+                        placeholder="ФИО" 
+                        autofocus=""
+                        onChange={(e)=>{setFio(e.target.value)}}
                     />
                     <div className="error-list  d-flex flex-column"></div>
                 </div>
