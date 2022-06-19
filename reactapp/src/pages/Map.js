@@ -1,5 +1,5 @@
 import React from "react";
-import { BACKEND_ROOT_URL } from "../setting";
+import { BACKEND_ROOT_URL, BACKEND_DOMAIN } from "../setting";
 import { getCookie, request, deleteCookie} from "../functions";
 import skver_img from '../images/skver_Karamzin.jpg';
 import { Container, Nav, ListGroup, Tab, TabContent, Form, Spinner } from "react-bootstrap";
@@ -50,8 +50,14 @@ async function loadPathsList(options) {
     return res;
 }
 
-function drawPoint(lat, long) {
-    var myPlacemark = new window.ymaps.Placemark([lat, long]);
+function drawPoint({lat, long, img}) {
+    console.log({img, BACKEND_DOMAIN})
+    var myPlacemark = new window.ymaps.Placemark([lat, long], {}, {
+        iconLayout: 'default#image',
+        iconImageHref: `${BACKEND_DOMAIN}${img}`,
+        iconImageSize: [25, 25],
+        // iconImageOffset: [-3, -42]
+    });
     window.myMap.geoObjects.add(myPlacemark);
 }
 
@@ -96,7 +102,7 @@ export default function Map() {
                     for (let point of path.points) {
                         console.log({point});
                         if (point.lat && point.long) {
-                            drawPoint(point.lat, point.long);
+                            drawPoint({lat: point.lat, long: point.long, img: point.category.icon});
                         }
                     }
                 }

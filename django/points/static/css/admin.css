@@ -86,3 +86,17 @@ th, td {
 #branding {
     font-size: 26px;
 }
+
+.cke_dialog_ui_text label, .cke_dialog_ui_text label  {
+    color: #afaeae !important;
+}
+
+.cke_dialog_contents .cke_dialog_ui_hbox {
+    background-color: #00000000 !important;
+}
+/* .cke_dialog_contents_body {
+    background-color: white;
+} */
+.cke_dialog_contents_body input, .cke_dialog_contents_body select, .cke_dialog_ui_button {
+    color: #212121 !important;
+}

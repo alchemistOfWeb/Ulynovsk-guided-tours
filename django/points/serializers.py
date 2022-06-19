@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.db.models import Count
 from django.contrib.auth.models import User
-from .models import Path, Point, Report, Profile
+from .models import Category, Path, Point, Report, Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -24,7 +24,14 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
 class PointSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
     
     class Meta:
         model = Point
