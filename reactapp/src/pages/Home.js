@@ -8,12 +8,7 @@ import { Spinner } from 'react-bootstrap';
 
 // const defaultImg = 'https://thunderbird-mozilla.ru/images/big-images/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird/kak-dobavit-uchetnuyu-zapis-v-mozilla-thunderbird.jpg';
 // const reports = [
-//     {
-//         id: 2,
-//         content: "Добрый день. Как родительница одного из учеников, которая сопровождала класс на экскурсию, была приятно удивлена тем, что все прошло занимательно и интересно, а возможность выбирать маршрут уже из готового списка очень обрадовала", 
-//         user: {profile: {fio: "Скворцова А.К."}},
-//         img: defaultImg
-//     },
+//     
 //     {
 //         id: 3,
 //         content: "Приложение работает корректно. Удобно, что не надо ничего скачивать, и все можно просмотреть прямо через браузер", 

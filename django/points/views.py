@@ -30,6 +30,8 @@ def current_profile(request):
 @api_view(['POST'])
 def create_user(request):
     u_serializer = UserSerializer(data=request.data)
+    u_serializer.is_valid(raise_exception=True)
+    u_serializer.save()
     return Response(u_serializer.data, status=status.HTTP_201_CREATED)
 
 

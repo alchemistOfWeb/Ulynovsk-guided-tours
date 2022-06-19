@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 django = "*"
 pillow = "*"
-python-dotenv = "*"
+python-dotenv = {extras = ["cli"], version = "*"}
 django-ckeditor = "*"
 django-imagekit = "*"
 djangorestframework = "*"

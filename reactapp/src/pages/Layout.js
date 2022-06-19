@@ -26,9 +26,7 @@ const Layout = () => {
             <div className="main-wrapper text-light">
                 <SNavbar/>
                 <div className="container-fluid overflow-auto">
-                {/* <div className="mt-3"> */}
                     <Outlet />
-                {/* </div> */}
                 </div>
             </div>
             <Footer/>
