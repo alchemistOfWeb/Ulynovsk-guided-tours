@@ -33,6 +33,12 @@ function PointsSelect({pathId, points, htmlId}) {
 
         jquery('#point-description-title').text(title) ;
         jquery('#point-description-content').html(desc);
+        jquery('#point-description-content').find('img').each((ind, el)=>{
+            let splitted = el.src.split('/').slice(3).join('/');
+            let newSrc = BACKEND_DOMAIN + '/' + splitted;
+            console.log({src: newSrc})
+            el.src = newSrc;
+        })
     };
 
     return (
