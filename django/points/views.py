@@ -10,7 +10,8 @@ from rest_framework.views import APIView
 from .serializers import (
     PathSerializer, PointSerializer, 
     ReportSerializer, UserSerializer, 
-    ProfileSerializer
+    ProfileSerializer, VisitedPointsSerializer,
+    PathAndVisitedSerializer
 )
 from django.middleware.csrf import get_token
 # Create your views here.
@@ -22,10 +23,23 @@ def csrf(request):
     
 @api_view(['GET'])
 def current_profile(request):
-    print(request.COOKIES) 
-    # profile = get_object_or_404(Profile.objects, request.user.id)
     serializer = UserSerializer(request.user)
     return Response({'user': serializer.data})
+
+@api_view(['GET'])
+def detail_profile(request):
+    vs_serializer = VisitedPointsSerializer(
+        request.user.visited_points,
+        many=True
+    )
+    return Response({'visited_places': vs_serializer.data})
+
+@api_view(['POST'])
+def add_visited_place(request):
+    serializer = VisitedPointsSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 def create_user(request):
@@ -38,6 +52,7 @@ def create_user(request):
 class PathViewSet(viewsets.ViewSet):
     queryset = Path.objects
     serializer_class = PathSerializer
+    serializer_with_user_data = PathAndVisitedSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     # def filter_queryset(self, queryset):
@@ -46,8 +61,23 @@ class PathViewSet(viewsets.ViewSet):
     #     return queryset
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
+        if (request.user):
+            print('hooooooooooo')
+            serializer = self.serializer_with_user_data(
+                self.queryset, 
+                many=True, 
+                context={'request': request}
+            )
+        else:
+            serializer = self.serializer_class(self.queryset, many=True)
+
         ctx = {'paths': serializer.data}
+        #     vs_serializer = VisitedPointsSerializer(
+        #         request.user.visited_points,
+        #         many=True
+        #     )
+        #     ctx.update({'visited_places': vs_serializer.data})
+        
         return Response(data=ctx, status=status.HTTP_200_OK)
 
     def create(self, request):

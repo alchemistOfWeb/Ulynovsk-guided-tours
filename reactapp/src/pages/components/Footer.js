@@ -70,6 +70,11 @@ export default function Footer() {
                             Оставить отзыв
                         </Link>
                     </h4>
+                    <h4 className="">
+                        <Link to="/order" className="text-light" onClick={handleClickReportLink}>
+                            Заказать экскурсию
+                        </Link>
+                    </h4>
                 </div>
             </Container>
         </footer>

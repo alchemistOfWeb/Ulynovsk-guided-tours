@@ -3,6 +3,8 @@ from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 import ckeditor
 from django.contrib.auth.models import User
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFit
 
 
 class Profile(models.Model):
@@ -25,6 +27,24 @@ class Profile(models.Model):
         verbose_name='Телефон', 
         null=False, default="", 
         blank=True
+    )
+    image_md = ProcessedImageField(
+        verbose_name="avatar(md)",
+        upload_to='images/avatars/md/',
+        processors=[ResizeToFit(300, 400)],
+        format='JPEG',
+        options={'quality': 90},
+        blank=True,
+        null=True
+    )
+    image_sm = ProcessedImageField(
+        verbose_name="avatar(sm)",
+        upload_to='images/avatars/sm/',
+        processors=[ResizeToFit(100, 100)],
+        format='JPEG',
+        options={'quality': 90},
+        blank=True,
+        null=True
     )
 
     class Meta:

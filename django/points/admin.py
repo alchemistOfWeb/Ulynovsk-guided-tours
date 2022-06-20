@@ -13,6 +13,10 @@ class PointAdmin(admin.ModelAdmin):
     list_filter = ['category',]
 
 
+class VisitedPointsAdmin(admin.ModelAdmin):
+    list_display = ['point', 'user', 'updated_at']
+
+
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['user', 'created_at', 'date', 'people']
 
@@ -64,3 +68,4 @@ admin.site.register(Image, ImageAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Setting, SettingsAdmin)
 admin.site.register(PointInPath, PointInPathAdmin)
+admin.site.register(VisitedPoints, VisitedPointsAdmin)

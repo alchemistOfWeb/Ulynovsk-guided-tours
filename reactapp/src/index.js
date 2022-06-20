@@ -16,6 +16,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import SendReport from './pages/SendReport';
 import reportWebVitals from './reportWebVitals';
+import Profile from './pages/Profile';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="signup" element={<SignUp />} />
           <Route path="signin" element={<SignIn />} />
           <Route path="report" element={<SendReport />} />
+          <Route path="personal" element={<Profile />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

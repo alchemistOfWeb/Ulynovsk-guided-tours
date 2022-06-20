@@ -117,9 +117,18 @@ export function getAccessToken() {
 export async function userRequest(options={}) {
     let url = `${BACKEND_ROOT_URL}profile/`;
     let headers = {
-        // "Content-Type": "application/json",
         "Authorization": getAccessToken()
     }
     const res = await request('GET', url, {}, headers, options);
+    return res;
+}
+
+export async function patchRequest(uri, data) {
+    let headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+    let url = `${BACKEND_ROOT_URL}${uri}`;
+    const res = await crdRequest('PATCH', url, data, headers);
     return res;
 }

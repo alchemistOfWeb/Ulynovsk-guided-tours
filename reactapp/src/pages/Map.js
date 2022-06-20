@@ -50,14 +50,22 @@ async function loadPathsList(options) {
     return res;
 }
 
-function drawPoint({lat, long, img}) {
+function drawPoint({lat, long, img, title}) {
     console.log({img, BACKEND_DOMAIN})
-    var myPlacemark = new window.ymaps.Placemark([lat, long], {}, {
-        iconLayout: 'default#image',
-        iconImageHref: `${BACKEND_DOMAIN}${img}`,
-        iconImageSize: [25, 25],
-        // iconImageOffset: [-3, -42]
-    });
+    var myPlacemark = new window.ymaps.Placemark(
+        [lat, long], 
+        {
+            hintContent: title,
+            balloonContent: 'Посещено',
+            iconContent: '12'
+        }, 
+        {
+            iconLayout: 'default#image',
+            iconImageHref: img,
+            iconImageSize: [25, 25],
+            // iconImageOffset: [-3, -42]
+        }
+    );
     window.myMap.geoObjects.add(myPlacemark);
 }
 
@@ -102,7 +110,12 @@ export default function Map() {
                     for (let point of path.points) {
                         console.log({point});
                         if (point.lat && point.long) {
-                            drawPoint({lat: point.lat, long: point.long, img: point.category.icon});
+                            drawPoint({
+                                lat: point.lat, 
+                                long: point.long, 
+                                img: point.category.icon,
+                                title: point.category.title
+                            });
                         }
                     }
                 }
