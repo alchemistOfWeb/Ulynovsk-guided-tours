@@ -62,7 +62,6 @@ class PathViewSet(viewsets.ViewSet):
 
     def list(self, request):
         if (request.user):
-            print('hooooooooooo')
             serializer = self.serializer_with_user_data(
                 self.queryset, 
                 many=True, 

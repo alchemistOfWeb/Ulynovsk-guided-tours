@@ -47,13 +47,12 @@ class VisitedPointsInPointSerializer(serializers.ModelSerializer):
 
 class PointAndVisitedSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
-    visited_points = serializers.SerializerMethodField()
+    visited = serializers.SerializerMethodField()
     
-    def get_visited_points(self, obj):
-        print('-'*30)
-        print(self.context)
+    def get_visited(self, obj):
         user = self.context['request'].user
-        return VisitedPointsInPointSerializer(obj.visited_points.filter(user=user.id), many=True).data
+        visited = VisitedPointsInPointSerializer(obj.visited_points.filter(user=user.id).first()).data
+        return visited
     
     class Meta:
         model = Point

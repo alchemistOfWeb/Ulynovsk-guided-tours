@@ -1,12 +1,13 @@
 import React from "react";
 import { BACKEND_ROOT_URL, BACKEND_DOMAIN } from "../setting";
-import { getCookie, request, deleteCookie} from "../functions";
+import { getCookie, request, deleteCookie, getAccessToken} from "../functions";
 import skver_img from '../images/skver_Karamzin.jpg';
 import { Container, Nav, ListGroup, Tab, TabContent, Form, Spinner } from "react-bootstrap";
 import jquery from "jquery";
 import { useState } from "react";
 import parseHtml from 'html-react-parser';
 import { useAsync } from 'react-async';
+import dayjs from "dayjs";
 
 // function PointDescription({point}) {
 //     return (
@@ -49,27 +50,28 @@ function PointsSelect({pathId, points, htmlId}) {
 }
 
 async function loadPathsList(options) {
-    // let headers = {'Authorization': getCookie('access_token')};
+    let headers = {'Authorization': getAccessToken()};
     let url = `${BACKEND_ROOT_URL}paths/`;
-    const res = await request('GET', url, {}, {}, {signal: options.signal})
+    const res = await request('GET', url, {}, headers, {signal: options.signal})
     console.log({res})
     return res;
 }
 
-function drawPoint({lat, long, img, title}) {
-    console.log({img, BACKEND_DOMAIN})
+function drawPoint({lat, long, img, title, visited}) {
+    console.log({visited})
     var myPlacemark = new window.ymaps.Placemark(
         [lat, long], 
+        // ${visited ? dayjs(visited.updated_at).format('YYYY-MM-DD HH:mm') : ''}
         {
             hintContent: title,
-            balloonContent: 'Посещено',
-            iconContent: '12'
+            balloonContent: `${title} - ${(visited && visited.point) ? 'посещено '+ dayjs(visited.updated_at).format('YYYY-MM-DD HH:mm') : ''}`,
+            iconContent: (visited && visited.point) ? '<span style="font-size: 190%; color: green; text-shadow: 0 0 3px green;">✓</span>' : '' 
         }, 
         {
-            iconLayout: 'default#image',
+            iconLayout: 'default#imageWithContent',
             iconImageHref: img,
             iconImageSize: [25, 25],
-            // iconImageOffset: [-3, -42]
+            iconImageOffset: [-3, -2]
         }
     );
     window.myMap.geoObjects.add(myPlacemark);
@@ -120,7 +122,8 @@ export default function Map() {
                                 lat: point.lat, 
                                 long: point.long, 
                                 img: point.category.icon,
-                                title: point.category.title
+                                title: point.category.title,
+                                visited: point.visited
                             });
                         }
                     }
