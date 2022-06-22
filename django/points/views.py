@@ -10,8 +10,7 @@ from rest_framework.views import APIView
 from .serializers import (
     PathSerializer, PointSerializer, 
     ReportSerializer, UserSerializer, 
-    ProfileSerializer, VisitedPointsSerializer,
-    PathAndVisitedSerializer
+    ProfileSerializer, VisitedPointsSerializer
 )
 from django.middleware.csrf import get_token
 # Create your views here.
@@ -52,7 +51,7 @@ def create_user(request):
 class PathViewSet(viewsets.ViewSet):
     queryset = Path.objects
     serializer_class = PathSerializer
-    serializer_with_user_data = PathAndVisitedSerializer
+    # serializer_with_user_data = PathAndVisitedSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     # def filter_queryset(self, queryset):
@@ -62,13 +61,14 @@ class PathViewSet(viewsets.ViewSet):
 
     def list(self, request):
         if (request.user):
-            serializer = self.serializer_with_user_data(
-                self.queryset, 
-                many=True, 
+            serializer = self.serializer_class(
+                self.queryset, many=True, 
                 context={'request': request}
             )
         else:
-            serializer = self.serializer_class(self.queryset, many=True)
+            serializer = self.serializer_class(
+                self.queryset, many=True
+            )
 
         ctx = {'paths': serializer.data}
         #     vs_serializer = VisitedPointsSerializer(

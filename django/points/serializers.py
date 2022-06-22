@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.db.models import Count
 from django.contrib.auth.models import User
-from .models import Category, Path, Point, Report, Profile, VisitedPoints
+from .models import Category, Path, Point, PointInPath, Report, Profile, VisitedPoints
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         profile_data = validated_data.pop('profile')
-        user = User.objects.create(**validated_data)
+        user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
         Profile.objects.create(user=user, **profile_data)
         return user
 
@@ -59,23 +59,41 @@ class PointAndVisitedSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PathSerializer(serializers.ModelSerializer):
-    points = PointSerializer(many=True, read_only=True)
+class PointInPathSerializer(serializers.ModelSerializer):
+    # category = CategorySerializer(read_only=True)
+    # visited = serializers.SerializerMethodField()
+    point = serializers.SerializerMethodField()
 
+    def get_point(self, obj):
+        if self.context:
+            # return PointAndVisitedSerializer(obj.points, many=True, context=self.context).data
+            return PointAndVisitedSerializer(obj.point, context=self.context).data
+        else: 
+            return PointSerializer(obj.point).data
+    
     class Meta:
-        model = Path
+        model = PointInPath
         fields = '__all__'
 
-class PathAndVisitedSerializer(serializers.ModelSerializer):
+
+# class PathSerializer(serializers.ModelSerializer):
+#     points = PointSerializer(many=True, read_only=True)
+
+#     class Meta:
+#         model = Path
+#         fields = '__all__'
+
+class PathSerializer(serializers.ModelSerializer):
     # points = PointAndVisitedSerializer(many=True, read_only=True)
-    points = serializers.SerializerMethodField()
+    points = serializers.SerializerMethodField(source="path_to_point")
 
     def get_points(self, obj):
         if self.context:
-            print('THere is a context!!!!')
-            return PointAndVisitedSerializer(obj.points, many=True, context=self.context).data
+            # return PointAndVisitedSerializer(obj.points, many=True, context=self.context).data
+            return PointInPathSerializer(obj.path_to_point, many=True, context=self.context).data
         else: 
-            return PointSerializer(obj.points, many=True).data
+            return PointSerializer(obj.path_to_point, many=True).data
+
     class Meta:
         model = Path
         fields = '__all__'

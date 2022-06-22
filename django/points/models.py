@@ -181,12 +181,12 @@ class Path(models.Model):
         blank=True, null=False
     )
 
-    points = models.ManyToManyField(
-        Point, 
-        related_name='paths', 
-        through='points.PointInPath', 
-        through_fields=('path', 'point')
-    )
+    # points = models.ManyToManyField(
+    #     Point, 
+    #     related_name='paths', 
+    #     through='points.PointInPath', 
+    #     through_fields=('path', 'point')
+    # )
 
     created_at = models.DateTimeField('Создан', auto_now_add=True)
     updated_at = models.DateTimeField('Изменен', auto_now=True)
@@ -222,6 +222,11 @@ class PointInPath(models.Model):
     works = models.BooleanField(
         'Активна?', blank=False, 
         null=False, default=True
+    )
+
+    order = models.PositiveSmallIntegerField(
+        'очередь', blank=False, 
+        null=False, default=0
     )
     
     class Meta:

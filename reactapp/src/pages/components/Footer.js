@@ -17,8 +17,8 @@ function handleClickReportLink(e) {
 
 export default function Footer() {
 
-    let telStr = "79626330000";
-    let emailStr = "nikitakzntcv@gmail.com";
+    let telStr = "71111110000";
+    let emailStr = "test@gmail.com";
     return (
         <footer id="footer">
 

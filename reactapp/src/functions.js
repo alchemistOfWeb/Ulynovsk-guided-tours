@@ -120,6 +120,14 @@ export async function userRequest(options={}) {
         "Authorization": getAccessToken()
     }
     const res = await request('GET', url, {}, headers, options);
+    
+    console.log({result: res});
+    if (res?.detail == "Недопустимый токен.") {
+        window.user = undefined;
+        deleteCookie('access_token');
+        document.location.reload();
+    }
+
     return res;
 }
 

@@ -24,27 +24,30 @@ function Point({value, title}) {
     )
 }
 
+function showPointDescription({title, desc}) {
+    jquery('#point-description-title').text(title) ;
+    jquery('#point-description-content').html(desc);
+    jquery('#point-description-content').find('img').each((ind, el)=>{
+        let splitted = el.src.split('/').slice(3).join('/');
+        let newSrc = BACKEND_DOMAIN + '/' + splitted;
+        console.log({src: newSrc})
+        el.src = newSrc;
+    })
+    document.location.hash = "";
+    document.location.hash = "point-description-section";
+}
+
 function PointsSelect({pathId, points, htmlId}) {
     const handleSelectPoint = (e) => {
-        console.log(e.target.value);
         let point = points.find((val, ind) => val.id == e.target.value);
-        let title = point.title;
-        let desc = point.description;
-        console.log({point})
-
-        jquery('#point-description-title').text(title) ;
-        jquery('#point-description-content').html(desc);
-        jquery('#point-description-content').find('img').each((ind, el)=>{
-            let splitted = el.src.split('/').slice(3).join('/');
-            let newSrc = BACKEND_DOMAIN + '/' + splitted;
-            console.log({src: newSrc})
-            el.src = newSrc;
-        })
+        let title = point.point.title;
+        let desc = point.point.description;
+        showPointDescription({title, desc});
     };
 
     return (
         <Form.Select className="d-none points-select map-options-select" id={htmlId} htmlSize={10} onChange={handleSelectPoint}>
-            {points.map((el, ind) => {return <Point value={el.id} title={el.title}/>})}
+            {points.map((el, ind) => {return <Point key={ind} value={el.id} title={el.point.title}/>})}
         </Form.Select>
     )
 }
@@ -57,14 +60,38 @@ async function loadPathsList(options) {
     return res;
 }
 
-function drawPoint({lat, long, img, title, visited}) {
-    console.log({visited})
+
+
+function drawPoint({point, pathId, desc, lat, long, img, hint, title, visited}) {
+    console.log({visited});
+
+    window.handleClickMarkVisited = function(e) {
+        console.log('handleClickMarkVisited');
+        let point = e.getAttribute('point-id');
+        console.log({point});
+    }
+    
+    window.handleClickShowDesc = function(e) {
+        console.log('handleClickShowDesc');
+        console.log(e);
+        let pointId = e.getAttribute('data-point-id');
+        let pathId = e.getAttribute('data-path-id');
+
+        let path = window.pathsList.find((val, ind) => val.id == pathId);
+        let point = path.points.find((val, ind) => val.id == pointId);
+        console.log({point: point.point})
+        showPointDescription({title: point.point.title, desc: point.point.description});
+    }
+
+    let visitLink = `<br><button data-point-id="${point.point.id}" class="btn btn-success py-0 px-1 m-0 mt-1" onclick="window.handleClickMarkVisited(this)">отметить как "посещенное"</button>`
+    let standartDesc = `${title} <br><button data-path-id="${pathId}" data-point-id="${point.id}" class="btn btn-primary py-0 px-1 m-0" onclick="window.handleClickShowDesc(this)">посмотреть описание</button>`
+
     var myPlacemark = new window.ymaps.Placemark(
         [lat, long], 
         // ${visited ? dayjs(visited.updated_at).format('YYYY-MM-DD HH:mm') : ''}
         {
-            hintContent: title,
-            balloonContent: `${title} - ${(visited && visited.point) ? 'посещено '+ dayjs(visited.updated_at).format('YYYY-MM-DD HH:mm') : ''}`,
+            hintContent: hint,
+            balloonContent: `${standartDesc} ${(visited && visited.point) ? ' - посещено '+ dayjs(visited.updated_at).format('YYYY-MM-DD HH:mm') : visitLink}`,
             iconContent: (visited && visited.point) ? '<span style="font-size: 190%; color: green; text-shadow: 0 0 3px green;">✓</span>' : '' 
         }, 
         {
@@ -81,8 +108,8 @@ export default function Map() {
     
 
     const handleSelectPath = (e) => {
-        console.log(e.target.value)
         let pointsListId = `points-list-${e.target.value}`;
+        console.log({pointsListId});
         jquery('#point-selects-list .points-select').removeClass(['show', 'active']).addClass('d-none');
         jquery(`#${pointsListId}`).addClass(['show', 'active']).removeClass('d-none');
     }
@@ -103,6 +130,7 @@ export default function Map() {
     }    
     if (data) {
         let pathsList = data.paths;
+        window.pathsList = pathsList;
 
         if (!window.myMap) {
             window.ymaps.ready(()=>{
@@ -117,13 +145,18 @@ export default function Map() {
                     console.log({path})
                     for (let point of path.points) {
                         console.log({point});
-                        if (point.lat && point.long) {
+
+                        if (point.point.lat && point.point.long) {
                             drawPoint({
-                                lat: point.lat, 
-                                long: point.long, 
-                                img: point.category.icon,
-                                title: point.category.title,
-                                visited: point.visited
+                                point,
+                                pathId: path.id,
+                                desc: point.point.description,
+                                lat: point.point.lat, 
+                                long: point.point.long, 
+                                img: point.point.category.icon,
+                                hint: point.point.category.title,
+                                title: point.point.title,
+                                visited: point.point.visited
                             });
                         }
                     }
@@ -142,7 +175,7 @@ export default function Map() {
                 <Container>
                     <h3 className="text-center">Карта достопримечательностей</h3>
                     <p>
-                        Здесь представленна интерактивная карта. На ней отмечены значимые места и достопримечательности связанные с писателями жившими на территории Ульяновской области.
+                        Здесь представлена интерактивная карта. На ней отмечены значимые места и достопримечательности связанные с писателями жившими на территории Ульяновской области.
                     </p>
                     <hr />
                     <div className="row map-options">
@@ -161,7 +194,7 @@ export default function Map() {
                             <div className="text-center map-options-select-header h5">достопримечательности</div>
                             <div className="point-selects-list" id="point-selects-list">
                                 {pathsList.map((el, ind) => {
-                                    return <PointsSelect pathId={el.id} points={el.points} htmlId={`points-list-${el.id}`}/>
+                                    return <PointsSelect key={ind} pathId={el.id} points={el.points} htmlId={`points-list-${el.id}`}/>
                                 })}
                             </div>
                         </div>
